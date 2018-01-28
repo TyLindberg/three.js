@@ -503,6 +503,26 @@ Sidebar.Material = function ( editor ) {
 
 	container.add( materialWireframeRow );
 
+	// color write
+
+	var materialColorWriteRow = new UI.Row();
+	var materialColorWrite = new UI.Checkbox( true ).onChange( update );
+
+	materialColorWriteRow.add( new UI.Text( 'Color Write' ).setWidth( '90px' ) );
+	materialColorWriteRow.add( materialColorWrite );
+
+	container.add( materialColorWriteRow );
+
+	// depth write
+
+	var materialDepthWriteRow = new UI.Row();
+	var materialDepthWrite = new UI.Checkbox( true ).onChange( update );
+
+	materialDepthWriteRow.add( new UI.Text( 'Depth Write' ).setWidth( '90px' ) );
+	materialDepthWriteRow.add( materialDepthWrite );
+
+	container.add( materialDepthWriteRow );
+
 	//
 
 	function update() {
@@ -952,6 +972,18 @@ Sidebar.Material = function ( editor ) {
 
 			}
 
+			if ( material.colorWrite !== undefined && material.colorWrite !== materialColorWrite.getValue() ) {
+
+				editor.execute( new SetMaterialValueCommand( currentObject, 'colorWrite', materialColorWrite.getValue() ) );
+
+			}
+
+			if ( material.depthWrite !== undefined && material.depthWrite !== materialDepthWrite.getValue() ) {
+
+				editor.execute( new SetMaterialValueCommand( currentObject, 'depthWrite', materialDepthWrite.getValue() ) );
+
+			}
+
 			refreshUI();
 
 		}
@@ -999,7 +1031,9 @@ Sidebar.Material = function ( editor ) {
 			'opacity': materialOpacityRow,
 			'transparent': materialTransparentRow,
 			'alphaTest': materialAlphaTestRow,
-			'wireframe': materialWireframeRow
+			'wireframe': materialWireframeRow,
+			'colorWrite': materialColorWriteRow,
+			'depthWrite': materialDepthWriteRow
 		};
 
 		var material = currentObject.material;
@@ -1326,6 +1360,18 @@ Sidebar.Material = function ( editor ) {
 		if ( material.wireframeLinewidth !== undefined ) {
 
 			materialWireframeLinewidth.setValue( material.wireframeLinewidth );
+
+		}
+
+		if ( material.colorWrite !== undefined ) {
+
+			materialColorWrite.setValue( material.colorWrite );
+
+		}
+
+		if ( material.depthWrite !== undefined ) {
+
+			materialDepthWrite.setValue( material.depthWrite );
 
 		}
 

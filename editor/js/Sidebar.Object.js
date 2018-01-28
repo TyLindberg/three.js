@@ -259,6 +259,16 @@ Sidebar.Object = function ( editor ) {
 
 	container.add( objectVisibleRow );
 
+	// render order
+
+	var objectRenderOrderRow = new UI.Row();
+	var objectRenderOrder = new UI.Integer( 0 ).onChange( update );
+
+	objectRenderOrderRow.add( new UI.Text( 'Render Order' ).setWidth( '90px' ) );
+	objectRenderOrderRow.add( objectRenderOrder );
+
+	container.add( objectRenderOrderRow );
+
 	// user data
 
 	var timeout;
@@ -433,6 +443,12 @@ Sidebar.Object = function ( editor ) {
 			if ( object.visible !== objectVisible.getValue() ) {
 
 				editor.execute( new SetValueCommand( object, 'visible', objectVisible.getValue() ) );
+
+			}
+
+			if ( object.renderOrder !== objectRenderOrder.getValue() ) {
+
+				editor.execute( new SetValueCommand( object, 'renderOrder', objectRenderOrder.getValue() ) );
 
 			}
 
@@ -654,6 +670,7 @@ Sidebar.Object = function ( editor ) {
 		}
 
 		objectVisible.setValue( object.visible );
+		objectRenderOrder.setValue( object.renderOrder );
 
 		try {
 
