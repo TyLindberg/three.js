@@ -200,7 +200,7 @@ Menubar.File = function ( editor ) {
 			// forceIndices: true, forcePowerOfTwoTextures: true
 			// to allow compatibility with facebook
 		}, { binary: true, forceIndices: true, forcePowerOfTwoTextures: true } );
-		
+
 	} );
 	options.add( option );
 
@@ -215,10 +215,19 @@ Menubar.File = function ( editor ) {
 
 		exporter.parse( editor.scene, function ( result ) {
 
-			saveString( JSON.stringify( result, null, 2 ), 'scene.gltf' );
+			saveString( JSON.stringify( result, null, 2 ), 'scene-embed.gltf' );
 
+		}, {
+			'embedImages': false
 		} );
 
+		// exporter.parse( editor.scene, function ( result ) {
+		//
+		// 	saveString( JSON.stringify( result, null, 2 ), 'scene-findex.gltf' );
+		//
+		// }, {
+		// 	'forceIndices': true
+		// } );
 
 	} );
 	options.add( option );
