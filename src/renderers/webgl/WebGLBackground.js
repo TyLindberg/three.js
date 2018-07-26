@@ -131,6 +131,21 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 			setClear( clearColor, clearAlpha );
 
 		},
+		getBackgroundTexture: function () {
+
+			if ( boxMesh !== undefined ) {
+
+				return boxMesh.material.uniforms.tCube.value;
+
+			} else if ( planeMesh !== undefined ) {
+
+				return planeMesh.material.map;
+
+			}
+
+			return null;
+
+		},
 		render: render
 
 	};

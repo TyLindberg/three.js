@@ -1371,7 +1371,14 @@ function WebGLRenderer( parameters ) {
 			var object = renderItem.object;
 			var geometry = renderItem.geometry;
 			var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial;
+			var envMapOverride = material.envMap === null;
 			var group = renderItem.group;
+
+			if ( envMapOverride ) {
+
+				material.envMap = background.getBackgroundTexture ();
+
+			}
 
 			if ( camera.isArrayCamera ) {
 
@@ -1413,6 +1420,12 @@ function WebGLRenderer( parameters ) {
 				_currentArrayCamera = null;
 
 				renderObject( object, scene, camera, geometry, material, group );
+
+			}
+
+			if ( envMapOverride ) {
+
+				material.envMap = null;
 
 			}
 
@@ -1670,7 +1683,7 @@ function WebGLRenderer( parameters ) {
 
 		var program = materialProperties.program,
 			p_uniforms = program.getUniforms(),
-			m_uniforms = materialProperties.shader.uniforms;
+			m_uniforms = materialProperties.shader.uniforms; // This needs to be updated with new texture
 
 		if ( state.useProgram( program.program ) ) {
 

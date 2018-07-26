@@ -14538,6 +14538,21 @@
 				setClear( clearColor, clearAlpha );
 
 			},
+			getBackgroundTexture: function () {
+
+				if ( boxMesh !== undefined ) {
+
+					return boxMesh.material.uniforms.tCube.value;
+
+				} else if ( planeMesh !== undefined ) {
+
+					return planeMesh.material.map;
+
+				}
+
+				return null;
+
+			},
 			render: render
 
 		};
@@ -22851,7 +22866,14 @@
 				var object = renderItem.object;
 				var geometry = renderItem.geometry;
 				var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial;
+				var envMapOverride = material.envMap === null;
 				var group = renderItem.group;
+
+				if ( envMapOverride ) {
+
+					material.envMap = background.getBackgroundTexture ();
+
+				}
 
 				if ( camera.isArrayCamera ) {
 
@@ -22893,6 +22915,12 @@
 					_currentArrayCamera = null;
 
 					renderObject( object, scene, camera, geometry, material, group );
+
+				}
+
+				if ( envMapOverride ) {
+
+					material.envMap = null;
 
 				}
 
@@ -23150,7 +23178,7 @@
 
 			var program = materialProperties.program,
 				p_uniforms = program.getUniforms(),
-				m_uniforms = materialProperties.shader.uniforms;
+				m_uniforms = materialProperties.shader.uniforms; // This needs to be updated with new texture
 
 			if ( state.useProgram( program.program ) ) {
 
@@ -30035,7 +30063,7 @@
 
 
 
-	var Geometries = Object.freeze({
+	var Geometries = /*#__PURE__*/Object.freeze({
 		WireframeGeometry: WireframeGeometry,
 		ParametricGeometry: ParametricGeometry,
 		ParametricBufferGeometry: ParametricBufferGeometry,
@@ -30805,7 +30833,7 @@
 
 
 
-	var Materials = Object.freeze({
+	var Materials = /*#__PURE__*/Object.freeze({
 		ShadowMaterial: ShadowMaterial,
 		SpriteMaterial: SpriteMaterial,
 		RawShaderMaterial: RawShaderMaterial,
@@ -31484,6 +31512,7 @@
 	 * @author mrdoob / http://mrdoob.com/
 	 */
 
+
 	function ImageLoader( manager ) {
 
 		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
@@ -31585,6 +31614,7 @@
 	 * @author mrdoob / http://mrdoob.com/
 	 */
 
+
 	function CubeTextureLoader( manager ) {
 
 		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
@@ -31654,6 +31684,7 @@
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 */
+
 
 	function TextureLoader( manager ) {
 
@@ -32375,9 +32406,7 @@
 	//
 
 	var tmp = new Vector3();
-	var px = new CubicPoly();
-	var py = new CubicPoly();
-	var pz = new CubicPoly();
+	var px = new CubicPoly(), py = new CubicPoly(), pz = new CubicPoly();
 
 	function CatmullRomCurve3( points, closed, curveType, tension ) {
 
@@ -33162,7 +33191,7 @@
 
 
 
-	var Curves = Object.freeze({
+	var Curves = /*#__PURE__*/Object.freeze({
 		ArcCurve: ArcCurve,
 		CatmullRomCurve3: CatmullRomCurve3,
 		CubicBezierCurve: CubicBezierCurve,
@@ -37910,6 +37939,7 @@
 	 * @author thespite / http://clicktorelease.com/
 	 */
 
+
 	function ImageBitmapLoader( manager ) {
 
 		if ( typeof createImageBitmap === 'undefined' ) {
@@ -38294,6 +38324,7 @@
 	 * @author zz85 / http://www.lab4games.net/zz85/blog
 	 * @author mrdoob / http://mrdoob.com/
 	 */
+
 
 	function Font( data ) {
 
@@ -44336,8 +44367,7 @@
 	 *  headWidth - Number
 	 */
 
-	var lineGeometry;
-	var coneGeometry;
+	var lineGeometry, coneGeometry;
 
 	function ArrowHelper( dir, origin, length, color, headLength, headWidth ) {
 
